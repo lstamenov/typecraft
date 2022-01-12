@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import Engine from 'src/engine/Engine';
 
 @Component({
   selector: 'app-root',
@@ -7,16 +8,27 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class AppComponent {
   public outputMessages: string[] = [];
+  public engine: Engine = new Engine();
   @ViewChild('inputArea') inputArea: ElementRef;
 
   constructor() {}
 
   executeCommand() {
-    const commands = this.inputArea.nativeElement.value.split(' ');
-    console.log(commands);
-    debugger;
+    const commands: string[] = this.inputArea.nativeElement.value.split(' ');
     const command = commands[0];
+    
     switch (command) {
+      case 'create':
+        if(commands[1].toLowerCase() === 'unit'){
+          const [ , ,name, position, team, unitType] = commands;
+          this.outputMessages.push(this.engine.createUnit(name, position, team, unitType));
+        }else if(commands[1].toLowerCase() === 'resource'){
+          const [ , ,type, position, quantity] = commands;
+          this.outputMessages.push(this.engine.createResource(type, position, quantity))
+        }else{
+          this.outputMessages.push('Invalid object type!');
+        }
+        break;
       default:
         break;
     }
