@@ -54,4 +54,5 @@ export default class Engine {
         }
         return `Created ${type} at position ${position} with ${quantity} health!`;
     }
+
 }

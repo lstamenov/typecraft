@@ -77,11 +77,11 @@ export default class Unit extends WorldObject {
  
     }
  
-    move(enemyPosition: Position): void {
+    public move(enemyPosition: Position): void {
         super.modifyPosition(enemyPosition);
     }
  
-    gatherResource(resource: Resource) {
+    public gatherResource(resource: Resource) {
         const unitType = this._type;
  
  
@@ -98,6 +98,13 @@ export default class Unit extends WorldObject {
         }
  
  
+    }
+
+    public  getInformation():string{
+        const name = this._name;
+        const HP = this.attack;
+        const position = this.position;
+        return `${name} is at position ${position.x},${position.y} and has ${HP}HP.`;
     }
  
 }
