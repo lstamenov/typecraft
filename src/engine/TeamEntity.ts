@@ -15,6 +15,10 @@ export default class TeamEntity{
         this._type = team;
     }
 
+    get type(): Team{
+        return this._type;
+    }
+
     get resourceStorage(): ResourceStorage{
         return this._resourceStorage;
     }
@@ -43,5 +47,31 @@ export default class TeamEntity{
                 return;
             }
         }
+    }
+
+    private getUnitPoints(): number{
+        let points = 0;
+        
+        this._units.forEach(u => {
+            switch(u.type){
+                case UnitType.GIANT:
+                    points += 15;
+                    break;
+                case UnitType.GUARD:
+                    points += 10;
+                    break;
+                case UnitType.NINJA:
+                    points += 15;
+                    break;
+                case UnitType.PEASANT:
+                    points += 5;
+                    break;
+            }
+        });
+        return points;
+    }
+
+    public getPoints(): number{
+        return this.getUnitPoints() + this._resourceStorage.getStoragePoints();
     }
 }

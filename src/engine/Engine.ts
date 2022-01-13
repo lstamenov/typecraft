@@ -159,4 +159,16 @@ export default class Engine {
            return (<Error>err).message;
         }
     }
+
+    private getRanking(): TeamEntity[]{
+        if(this._redTeam.getPoints() > this._blueTeam.getPoints()){
+            return [this._redTeam, this._blueTeam];
+        }
+        return [this._blueTeam, this._redTeam];
+    }
+
+    public endGame(): string{
+        const [winner, looser] = this.getRanking();
+        return `The game is over. Team ${winner.type} is the winner with ${winner.getPoints()} points, and team ${looser.type} is the loser with ${looser.getPoints()} points`;
+    }
 }
