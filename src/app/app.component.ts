@@ -11,27 +11,27 @@ export class AppComponent {
   public engine: Engine = new Engine();
   @ViewChild('inputArea') inputArea: ElementRef;
 
-  constructor() {}
+  constructor() { }
 
   executeCommand() {
     const commands: string[] = this.inputArea.nativeElement.value.split(' ');
     const command = commands[0];
-    
+
     switch (command) {
       case 'create':
-        if(commands[1].toLowerCase() === 'unit'){
-          const [ , ,name, position, team, unitType] = commands;
+        if (commands[1].toLowerCase() === 'unit') {
+          const [, , name, position, team, unitType] = commands;
           this.outputMessages.push(this.engine.createUnit(name, position, team, unitType));
-        }else if(commands[1].toLowerCase() === 'resource'){
-          const [ , ,type, position, quantity] = commands;
+        } else if (commands[1].toLowerCase() === 'resource') {
+          const [, , type, position, quantity] = commands;
           this.outputMessages.push(this.engine.createResource(type, position, quantity))
-        }else{
+        } else {
           this.outputMessages.push('Invalid object type!');
         }
         break;
       case 'order':
         const command: string = commands[2].toLowerCase();
-        if(command === 'attack'){
+        if (command === 'attack') {
           this.outputMessages.push(this.engine.performAttack(commands[1]));
         }
         if(command === 'gather'){
@@ -45,6 +45,20 @@ export class AppComponent {
         this.outputMessages.push(this.engine.endGame());
         this.engine = new Engine();
         break;
+      case 'show':
+        const type: string = commands[1];
+        if (type === 'all') {
+          const redTeamUnitsCount = this.engine.redTeam.units.length;
+          const blueTeamUnitsCount = this.engine.blueTeam.units.length;
+
+          if (redTeamUnitsCount > 0) {
+            this.outputMessages.push(this.engine.redTeam.getInformationForAllUnits());
+          }
+          if (blueTeamUnitsCount > 0) {
+            this.outputMessages.push(this.engine.blueTeam.getInformationForAllUnits());
+          }
+        }
+        break
       default:
         break;
     }
