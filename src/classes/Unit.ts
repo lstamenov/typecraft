@@ -65,39 +65,42 @@ export default class Unit extends WorldObject {
     get canGather(): boolean {
         return this._canGather;
     }
+
+    get type(): UnitType{
+        return this._type;
+    }
  
+    private isCriticalStrike(): boolean {
+        return Math.floor(Math.random() * (6 - 1 + 1) + 1) % 2 === 0;
+    }
  
-    attackEnemy(enemy: Unit): void {
- 
- 
-        const attackPoints = this._attack;
-        enemy.modifyHealthPoints(attackPoints);
+    public attackEnemy(enemy: Unit): void {
+        const attackPoints = this.isCriticalStrike() ? this._attack * 2 : this._attack;
+        enemy.modifyHealthPoints(-attackPoints + enemy.defense);
         const defensePoints = this._defense;
-        this.modifyHealthPoints(defensePoints);
- 
+        if(this.type !== UnitType.NINJA){
+            this.modifyHealthPoints(-enemy.attack + defensePoints);
+        }
     }
  
     public move(enemyPosition: Position): void {
         super.modifyPosition(enemyPosition);
     }
  
-    public gatherResource(resource: Resource) {
+    public gatherResource(resource: Resource): void {
         const unitType = this._type;
- 
  
         switch (unitType) {
             case 'PEASANT':
                 break;
             case 'GIANT':
                 if (resource.type !== ResourceType.LUMBER) {
-                    throw new Error('You cannot gather that');
+                    throw new Error('You cannot gather that!');
                 }
                 break;
             default:
-                throw new Error('You cannot gather that');
+                throw new Error('You cannot gather that!');
         }
- 
- 
     }
 
     public  getInformation():string{

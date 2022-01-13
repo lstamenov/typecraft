@@ -1,8 +1,9 @@
-import { ResourceType, Team} from "src/classes/enum.types";
+import { ResourceType, Team, UnitType} from "src/classes/enum.types";
 import { Position } from "src/classes/models";
 import Resource from "src/classes/Resource";
 import TeamEntity from "./TeamEntity";
 import { UnitUtils, CommonUtils, ResourceUtils} from "src/utils/utils";
+import Unit from "src/classes/Unit";
 
 export default class Engine {
     private _redTeam: TeamEntity;
@@ -55,4 +56,50 @@ export default class Engine {
         return `Created ${type} at position ${position} with ${quantity} health!`;
     }
 
+    private getUnitByName(name: string): Unit{
+        const redTeamUnit = this._redTeam.getUnitByName(name);
+        const blueTeamUnit = this._blueTeam.getUnitByName(name); 
+        if(redTeamUnit){
+            return redTeamUnit;
+        }
+        if(blueTeamUnit){
+            return blueTeamUnit;
+        }    
+        throw new Error(`Unit ${name} does not exist!`);
+    }
+
+    public performAttack(attackerName: string): string{
+        const attacker: Unit = this.getUnitByName(attackerName);
+        const enemyTeam: Team = attacker.team === Team.BLUE ? Team.RED : Team.BLUE;
+        const defenders: Unit[] = enemyTeam === Team.BLUE ? 
+        this._blueTeam.getUnitsByPosition(attacker.position)
+         : this._redTeam.getUnitsByPosition(attacker.position);     
+        const allies: Unit[] = enemyTeam === Team.RED ? 
+        this._blueTeam.getUnitsByPosition(attacker.position)
+         : this._redTeam.getUnitsByPosition(attacker.position);
+
+        if(defenders.length === 0 && allies.length > 1){
+            return `You cannot attack your friends, dummy!`;
+        }
+
+        if(defenders.length === 0 && allies.length === 1){
+            return `There is nothing to attack!`;
+        }
+
+
+        if(attacker.type === UnitType.NINJA){
+            let damageTaken: number = this._unitUtils.getUnitsHealhtPoints(defenders);
+            defenders.forEach(d => attacker.attackEnemy(d));
+            damageTaken -= this._unitUtils.getUnitsHealhtPoints(defenders);
+            const deadUnits: Unit[] = this._unitUtils.getDeadUnits(defenders);
+            return `There was a fierce fight between ${attacker.name} - attacker and ${this._unitUtils.getDefendersAsString(defenders)} - defenders. The defenders took totally 0 damage. The attacker took ${damageTaken} damage. There are ${deadUnits.length} dead units after the fight was over - ${this._unitUtils.getDefendersAsString(deadUnits)}`;
+        }else {
+            const defender = this._unitUtils.getRandomUnit(defenders);
+            const attackerHealthBeforeFight = attacker.healthPoints;
+            const defenderHealthBeforeFight = defender.healthPoints;
+            attacker.attackEnemy(defender);
+            const deadUnits: Unit[] = this._unitUtils.getDeadUnits([attacker, defender]);
+            return `There was a fierce fight between ${attacker.name} - attacker and ${defender.name} - defender. The defender took totally ${attackerHealthBeforeFight - attacker.healthPoints}. The attacker took ${defenderHealthBeforeFight - defender.healthPoints} damage. There are ${deadUnits.length} dead units after the fight was over - ${this._unitUtils.getDefendersAsString(deadUnits)}`;
+        }
+    }
 }

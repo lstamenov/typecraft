@@ -2,6 +2,7 @@ import TeamEntity from "src/engine/TeamEntity";
 import { ResourceType, Team, UnitType } from "src/classes/enum.types";
 import { Position } from "src/classes/models";
 import Resource from "src/classes/Resource";
+import Unit from "src/classes/Unit";
 
 export class UnitUtils {
     public validateUnitName(name: string, redTeam: TeamEntity, blueTeam: TeamEntity): void{
@@ -30,6 +31,26 @@ export class UnitUtils {
              return UnitType[unitType];
         }
         throw new Error(`Unit type ${typeAsString} does not exist!`);
+    }
+
+    public getRandomUnit(units: Unit[]): Unit{
+        return units[Math.floor(Math.random() * ((units.length - 1) - 0 + 1) + 0)];
+    }
+
+    public getUnitsHealhtPoints(units: Unit[]): number{
+        let sum = 0;
+        units.forEach(u => sum += u.healthPoints);
+        return sum;
+    }
+
+    public getDeadUnits(units: Unit[]): Unit[]{
+        return units.filter(unit => unit.isDestroyed === true);
+    }
+
+    public getDefendersAsString(units: Unit[]): string{
+        let output: string = '';
+        units.forEach((u, index) => output += index == units.length - 1 ? u.name : `${u.name}, `);
+        return output;
     }
 }
 
