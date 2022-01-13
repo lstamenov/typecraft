@@ -79,6 +79,13 @@ export class ResourceUtils{
 export class CommonUtils{
     public getPositionByString(positionAsString: string): Position{
         const coordinates: string[] = positionAsString.split(',');
-        return {x: Number(coordinates[0]), y: Number(coordinates[1])};
+        const xCoordinate: number = Number(coordinates[0]);
+        const yCoordinate: number = Number(coordinates[1]);
+        console.log(`${xCoordinate}  ${yCoordinate}`);
+        
+        if(Number.isNaN(xCoordinate) || Number.isNaN(yCoordinate)){
+            throw new Error('Please enter valid coordinates!');
+        }
+        return {x: xCoordinate, y:yCoordinate};
     }   
 }

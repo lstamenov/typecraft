@@ -16,6 +16,10 @@ export default class Resource extends WorldObject {
         return this._quantity;
     }
 
+    set quantity(value: number){
+        this._quantity = value;
+    }
+
     get type(): ResourceType {
         return this._type;
     }

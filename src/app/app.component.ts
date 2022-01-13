@@ -34,11 +34,11 @@ export class AppComponent {
         if (command === 'attack') {
           this.outputMessages.push(this.engine.performAttack(commands[1]));
         }
-        if (command === 'gather') {
-
+        if(command === 'gather'){
+          this.outputMessages.push(this.engine.performGather(commands[1]));
         }
-        if (command === 'go') {
-
+        if(command === 'go'){
+          this.outputMessages.push(this.engine.performGo(commands[1], commands[3]));
         }
         break;
       case 'show':
