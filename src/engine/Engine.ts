@@ -75,6 +75,17 @@ export default class Engine {
         throw new Error(`Unit ${name} does not exist!`);
     }
 
+    private getUnitsByPosition(position: Position): Unit[]{
+        const blueTeamUnits = this._blueTeam.getUnitsByPosition(position);
+        const redTeamUnits = this._redTeam.getUnitsByPosition(position);
+
+        if(blueTeamUnits.length === 0 && redTeamUnits.length === 0){
+            throw new Error(`There is no one at coordinates ${position.x},${position.y}`);
+        }
+
+        return new Array().concat(blueTeamUnits, redTeamUnits);
+    }
+
     private deleteDeadUnits(units: Unit[]): void{
         units.forEach(u => u.team === Team.BLUE ? this._blueTeam.deleteUnit(u) : this._redTeam.deleteUnit(u));
     }
@@ -115,7 +126,7 @@ export default class Engine {
                 const deadUnits: Unit[] = this._unitUtils.getDeadUnits([attacker, defender]);
                 console.log(defender);
                 this.deleteDeadUnits(deadUnits);
-                return `There was a fierce fight between ${attacker.name} - attacker and ${defender.name} - defender. The defender took totally ${attackerHealthBeforeFight - attacker.healthPoints}. The attacker took ${defenderHealthBeforeFight - defender.healthPoints} damage. There are ${deadUnits.length} dead units after the fight was over - ${this._unitUtils.getDefendersAsString(deadUnits)}`;
+                return `There was a fierce fight between ${attacker.name} - attacker and ${defender.name} - defender. The defender took totally ${attackerHealthBeforeFight - attacker.healthPoints} damage. The attacker took ${defenderHealthBeforeFight - defender.healthPoints} damage. There are ${deadUnits.length} dead units after the fight was over - ${this._unitUtils.getDefendersAsString(deadUnits)}`;
             }
         }catch(err){
            return (<Error>err).message;
@@ -166,7 +177,6 @@ export default class Engine {
         }
     }
 
-<<<<<<< HEAD
     private getRanking(): TeamEntity[]{
         if(this._redTeam.getPoints() > this._blueTeam.getPoints()){
             return [this._redTeam, this._blueTeam];
@@ -177,17 +187,40 @@ export default class Engine {
     public endGame(): string{
         const [winner, looser] = this.getRanking();
         return `The game is over. Team ${winner.type} is the winner with ${winner.getPoints()} points, and team ${looser.type} is the loser with ${looser.getPoints()} points`;
-=======
+    }
+
     public showAll(): string {
         const redTeamUnitsCount = this._redTeam.units.length;
         const blueTeamUnitsCount = this._blueTeam.units.length;
-        if (redTeamUnitsCount > 0) {
-            return this._redTeam.getInformationForAllUnits();
-        }
-        if (blueTeamUnitsCount > 0) {
-            return this._blueTeam.getInformationForAllUnits();
+        if(redTeamUnitsCount > 0 || blueTeamUnitsCount > 0){
+            return this._blueTeam.getInformationForAllUnits() + 
+            this._redTeam.getInformationForAllUnits();
         }
         return 'There are no units left.'
->>>>>>> 7a15fb6095cadfef69c9a85ad2dc3716995d5b56
+    }
+
+    public getUnitInformationByCoordinates(positionAsString: string): string{
+        try{
+            const position: Position = this._commonUtils.getPositionByString(positionAsString);
+            const allUnitsByCoordinate = this.getUnitsByPosition(position);
+            let message: string = `There are ${allUnitsByCoordinate.length} units on this coordinates - `;
+            allUnitsByCoordinate.forEach((u, index) => message += index === allUnitsByCoordinate.length - 1 ? u.name : `${u.name}, `);
+            return message;
+        }catch(err){
+           return (<Error>err).message;
+        }
+    }
+
+    public showAllResources(): string{
+        if(this._resources.length === 0){
+            return 'There are no resources on the field.';
+        }
+        let outputMessage: string = '';
+        this._resources.forEach((r, index) => outputMessage += index === 0 ? r.toString() : `\n${r.toString()}`);
+        return outputMessage;
+    }
+
+    public showAllUnitsByTeam(teamAsString: string): string{
+        return teamAsString.toLowerCase() === 'blue' ? this._blueTeam.getInformationForAllUnits() : this.redTeam.getInformationForAllUnits();
     }
 }

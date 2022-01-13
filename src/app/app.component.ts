@@ -47,19 +47,18 @@ export class AppComponent {
         break;
       case 'show':
         const type: string = commands[1];
-        if (type === 'all') {
-          const redTeamUnitsCount = this.engine.redTeam.units.length;
-          const blueTeamUnitsCount = this.engine.blueTeam.units.length;
-
-          if (redTeamUnitsCount > 0) {
-            this.outputMessages.push(this.engine.redTeam.getInformationForAllUnits());
-          }
-          if (blueTeamUnitsCount > 0) {
-            this.outputMessages.push(this.engine.blueTeam.getInformationForAllUnits());
-          }
+        if (type.toLowerCase() === 'all') {
+          this.outputMessages.push(this.engine.showAll());
+        }else if(type.toLowerCase() === 'resources'){
+          this.outputMessages.push(this.engine.showAllResources());
+        }else if(type.toLowerCase() === 'units'){
+          this.outputMessages.push(this.engine.showAllUnitsByTeam(commands[2]));
+        }else{
+          this.outputMessages.push(this.engine.getUnitInformationByCoordinates(commands[1]));
         }
-        break
+        break;
       default:
+        this.outputMessages.push('Invalid command!');
         break;
     }
   }

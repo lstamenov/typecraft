@@ -30,4 +30,8 @@ export default class Resource extends WorldObject {
 
         return `There are ${quantity} of ${type} left.`;
     }
+
+    public override toString(): string{
+        return `resource: ${this._type} quantity: ${this._quantity} position: x: ${super.position.x}, y: ${super.position.y}`;
+    }
 }
