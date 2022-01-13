@@ -107,7 +107,7 @@ export default class Unit extends WorldObject {
         const name = this._name;
         const HP = this.attack;
         const position = this.position;
-        return `${name} is at position ${position.x},${position.y} and has ${HP}HP.`;
+        return `${name} is at position ${position.x},${position.y} and has ${HP}HP.\n`;
     }
  
 }

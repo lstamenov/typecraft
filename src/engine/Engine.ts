@@ -1,8 +1,8 @@
-import { ResourceType, Team, UnitType} from "src/classes/enum.types";
+import { ResourceType, Team, UnitType } from "src/classes/enum.types";
 import { Position } from "src/classes/models";
 import Resource from "src/classes/Resource";
 import TeamEntity from "./TeamEntity";
-import { UnitUtils, CommonUtils, ResourceUtils} from "src/utils/utils";
+import { UnitUtils, CommonUtils, ResourceUtils } from "src/utils/utils";
 import Unit from "src/classes/Unit";
 
 export default class Engine {
@@ -13,7 +13,7 @@ export default class Engine {
     private _resourceUtils: ResourceUtils;
     private _commonUtils: CommonUtils;
 
-    constructor(){
+    constructor() {
         this._redTeam = new TeamEntity(Team.RED);
         this._blueTeam = new TeamEntity(Team.BLUE);
         this._resources = [];
@@ -22,49 +22,56 @@ export default class Engine {
         this._commonUtils = new CommonUtils();
     }
 
-    
-    public createUnit(name: string, positionAsString: string, teamAsString: string, unitTypeAsString: string): string{
-        try{
-         this._unitUtils.validateUnitName(name, this._redTeam, this._blueTeam);
-         const team = this._unitUtils.getUnitTeamByString(teamAsString);
-         const unitType = this._unitUtils.getUnitTypeByString(unitTypeAsString.toUpperCase());
-         const position = this._commonUtils.getPositionByString(positionAsString);
-        if(team === 'RED'){
-            this._redTeam.createUnit(name, position, team, unitType);
-        }else{
-            this._blueTeam.createUnit(name, position, team, unitType);
-        }
-        }catch(err){
-           return (<Error>err).message;
-        }
-
-        return  `Created ${unitTypeAsString} from ${teamAsString} team named ${name} at position ${positionAsString}`;
+    public get redTeam() {
+        return this._redTeam;
     }
 
-    public createResource(type: string, position: string, quantity: string): string{
-        try{
+    public get blueTeam() {
+        return this._blueTeam;
+    }
+
+    public createUnit(name: string, positionAsString: string, teamAsString: string, unitTypeAsString: string): string {
+        try {
+            this._unitUtils.validateUnitName(name, this._redTeam, this._blueTeam);
+            const team = this._unitUtils.getUnitTeamByString(teamAsString);
+            const unitType = this._unitUtils.getUnitTypeByString(unitTypeAsString.toUpperCase());
+            const position = this._commonUtils.getPositionByString(positionAsString);
+            if (team === 'RED') {
+                this._redTeam.createUnit(name, position, team, unitType);
+            } else {
+                this._blueTeam.createUnit(name, position, team, unitType);
+            }
+        } catch (err) {
+            return (<Error>err).message;
+        }
+
+        return `Created ${unitTypeAsString} from ${teamAsString} team named ${name} at position ${positionAsString}`;
+    }
+
+    public createResource(type: string, position: string, quantity: string): string {
+        try {
             const resourceType: ResourceType = this._resourceUtils.getResourceTypeByString(type.toUpperCase());
             const resourcePosition: Position = this._commonUtils.getPositionByString(position);
             const resourceQuantity = this._resourceUtils.getQuantityByString(quantity);
-            if(this._resourceUtils.isPositionTaken(this._resources, resourcePosition)){
+            if (this._resourceUtils.isPositionTaken(this._resources, resourcePosition)) {
                 throw new Error('There cannot be two resources at the same coordinates!');
             }
             this._resources.push(new Resource(resourceQuantity, resourcePosition, resourceType));
-        }catch(err){
-           return (<Error>err).message;
+        } catch (err) {
+            return (<Error>err).message;
         }
         return `Created ${type} at position ${position} with ${quantity} health!`;
     }
 
-    private getUnitByName(name: string): Unit{
+    private getUnitByName(name: string): Unit {
         const redTeamUnit = this._redTeam.getUnitByName(name);
-        const blueTeamUnit = this._blueTeam.getUnitByName(name); 
-        if(redTeamUnit){
+        const blueTeamUnit = this._blueTeam.getUnitByName(name);
+        if (redTeamUnit) {
             return redTeamUnit;
         }
-        if(blueTeamUnit){
+        if (blueTeamUnit) {
             return blueTeamUnit;
-        }    
+        }
         throw new Error(`Unit ${name} does not exist!`);
     }
 
@@ -114,7 +121,6 @@ export default class Engine {
            return (<Error>err).message;
         }
     }
-
     private getResourceByPosition(position: Position): (Resource | undefined){
         return this._resources.find(res => res.position.x === position.x && res.position.y === position.y);
     }
@@ -158,5 +164,17 @@ export default class Engine {
         }catch(err){
            return (<Error>err).message;
         }
+    }
+
+    public showAll(): string {
+        const redTeamUnitsCount = this._redTeam.units.length;
+        const blueTeamUnitsCount = this._blueTeam.units.length;
+        if (redTeamUnitsCount > 0) {
+            return this._redTeam.getInformationForAllUnits();
+        }
+        if (blueTeamUnitsCount > 0) {
+            return this._blueTeam.getInformationForAllUnits();
+        }
+        return 'There are no units left.'
     }
 }
