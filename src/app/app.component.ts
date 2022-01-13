@@ -35,7 +35,7 @@ export class AppComponent {
           this.outputMessages.push(this.engine.performAttack(commands[1]));
         }
         if(command === 'gather'){
-
+          this.outputMessages.push(this.engine.performGather(commands[1]));
         }
         if(command === 'go'){
 
