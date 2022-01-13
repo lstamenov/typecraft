@@ -29,6 +29,18 @@ export class AppComponent {
           this.outputMessages.push('Invalid object type!');
         }
         break;
+      case 'order':
+        const command: string = commands[2].toLowerCase();
+        if(command === 'attack'){
+          this.outputMessages.push(this.engine.performAttack(commands[1]));
+        }
+        if(command === 'gather'){
+
+        }
+        if(command === 'go'){
+
+        }
+        break;
       default:
         break;
     }

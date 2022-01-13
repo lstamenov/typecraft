@@ -20,7 +20,23 @@ export default class TeamEntity{
 
     public checkIfNameIsUnique(name: string): boolean{
         const unit: (Unit | undefined) = this._units.find(unit => unit.name === name);
-        console.log(unit);
         return unit ? false : true;
+    }
+
+    public getUnitByName(name: string): (Unit | undefined){
+        return this._units.find(unit => unit.name === name);       
+    }
+
+    public getUnitsByPosition(position: Position): Unit[]{
+        return this._units.filter(unit => unit.position.x === position.x && unit.position.y === position.y);
+    }
+
+    public deleteUnit(unit: Unit): void{
+        for(let i = 0; i < this._units.length; i++){
+            if(unit === this._units[i]){
+                this._units.splice(i, 1);
+                return;
+            }
+        }
     }
 }
