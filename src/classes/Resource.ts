@@ -2,21 +2,28 @@ import WorldObject from "./WorldObject";
 import { ResourceType, Team } from "./enum.types";
 import { Position } from "./models";
 
-export default class Resource extends WorldObject{
+export default class Resource extends WorldObject {
     private _quantity: number;
     private _type: ResourceType;
 
-    constructor(healthPoints: number, position: Position, type: ResourceType){
+    constructor(healthPoints: number, position: Position, type: ResourceType) {
         super(healthPoints, position, false, Team.NEUTRAL);
         this._quantity = this.healthPoints;
         this._type = type;
     }
 
-    get quantity(): number{
+    get quantity(): number {
         return this._quantity;
     }
 
-    get type(): ResourceType{
+    get type(): ResourceType {
         return this._type;
+    }
+
+    public getInformation(): string {
+        const quantity = this._quantity;
+        const type = this._type.toString();
+
+        return `There are ${quantity} of ${type} left.`;
     }
 }
