@@ -41,4 +41,8 @@ export default class ResourceStorage {
     public getResourcesInformation(): string{
         return `${this._foodStored.quantity} food, ${this._lumberStored.quantity} lumber and ${this._ironStored.quantity} iron`;
     }
+
+    public getStoragePoints(): number{
+        return (this._foodStored.quantity + this._ironStored.quantity + this._lumberStored.quantity) * 10;
+    }
 }

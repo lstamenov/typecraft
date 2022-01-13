@@ -166,6 +166,18 @@ export default class Engine {
         }
     }
 
+<<<<<<< HEAD
+    private getRanking(): TeamEntity[]{
+        if(this._redTeam.getPoints() > this._blueTeam.getPoints()){
+            return [this._redTeam, this._blueTeam];
+        }
+        return [this._blueTeam, this._redTeam];
+    }
+
+    public endGame(): string{
+        const [winner, looser] = this.getRanking();
+        return `The game is over. Team ${winner.type} is the winner with ${winner.getPoints()} points, and team ${looser.type} is the loser with ${looser.getPoints()} points`;
+=======
     public showAll(): string {
         const redTeamUnitsCount = this._redTeam.units.length;
         const blueTeamUnitsCount = this._blueTeam.units.length;
@@ -176,5 +188,6 @@ export default class Engine {
             return this._blueTeam.getInformationForAllUnits();
         }
         return 'There are no units left.'
+>>>>>>> 7a15fb6095cadfef69c9a85ad2dc3716995d5b56
     }
 }

@@ -41,6 +41,10 @@ export class AppComponent {
           this.outputMessages.push(this.engine.performGo(commands[1], commands[3]));
         }
         break;
+      case 'end':
+        this.outputMessages.push(this.engine.endGame());
+        this.engine = new Engine();
+        break;
       case 'show':
         const type: string = commands[1];
         if (type === 'all') {
