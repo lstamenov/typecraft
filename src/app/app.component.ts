@@ -57,6 +57,9 @@ export class AppComponent {
           if (blueTeamUnitsCount > 0) {
             this.outputMessages.push(this.engine.blueTeam.getInformationForAllUnits());
           }
+        }else if(type === 'units'){
+          const teamColor = commands[2].toUpperCase();
+          this.outputMessages.push(this.engine.showUnits(teamColor));
         }
         break
       default:
