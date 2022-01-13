@@ -121,4 +121,16 @@ export default class Engine {
         }
         return 'There are no units left.'
     }
+
+    public showUnits(teamColor:string):string{
+        console.log(teamColor); 
+        if(teamColor === 'RED'){
+            console.log('red');
+            return this._redTeam.getInformationForAllUnits();
+        }else if(teamColor === 'BLUE'){
+            return this._blueTeam.getInformationForAllUnits();
+        }
+
+        return 'There are no units left.';
+    }
 }
