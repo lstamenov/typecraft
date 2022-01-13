@@ -148,4 +148,15 @@ export default class Engine {
            return (<Error>err).message;
         }
     } 
+
+    public performGo(unitName: string, positionAsString: string): string{
+        try{
+            const position = this._commonUtils.getPositionByString(positionAsString);
+            const unit = this.getUnitByName(unitName);
+            unit.modifyPosition(position);
+            return `Unit ${unitName} moved to ${positionAsString}`;
+        }catch(err){
+           return (<Error>err).message;
+        }
+    }
 }

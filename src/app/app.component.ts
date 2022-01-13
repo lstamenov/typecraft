@@ -38,7 +38,7 @@ export class AppComponent {
           this.outputMessages.push(this.engine.performGather(commands[1]));
         }
         if(command === 'go'){
-
+          this.outputMessages.push(this.engine.performGo(commands[1], commands[3]));
         }
         break;
       default:
