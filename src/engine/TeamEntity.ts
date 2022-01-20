@@ -1,7 +1,6 @@
-import Resource from "src/classes/Resource";
 import Unit from "src/classes/Unit";
 import { Team, UnitType } from "src/classes/enum.types";
-import { Position } from "src/classes/models";
+import { Position } from "src/models/models";
 import ResourceStorage from "src/classes/ResourceStorage";
 
 export default class TeamEntity {

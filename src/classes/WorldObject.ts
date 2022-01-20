@@ -1,7 +1,7 @@
 import {Team} from './enum.types';
-import { Position } from './models';
+import { Position, WorldObjectModel } from '../models/models';
 
-export default abstract class WorldObject {
+export default abstract class WorldObject implements WorldObjectModel{
     private _isDestroyed: boolean;
     private _healthPoints: number;
     private _position: Position;

@@ -1,9 +1,9 @@
 import { ResourceType, Team, UnitType } from "./enum.types";
-import { Position } from "./models";
+import { Position, UnitModel } from "../models/models";
 import Resource from "./Resource";
 import WorldObject from "./WorldObject";
  
-export default class Unit extends WorldObject {
+export default class Unit extends WorldObject implements UnitModel {
     private _name: string;
     private _attack: number;
     private _defense: number;
