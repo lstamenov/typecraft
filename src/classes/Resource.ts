@@ -6,12 +6,6 @@ export default class Resource extends WorldObject {
     private _quantity: number;
     private _type: ResourceType;
 
-    constructor(healthPoints: number, position: Position, type: ResourceType) {
-        super(healthPoints, position, false, Team.NEUTRAL);
-        this._quantity = this.healthPoints;
-        this._type = type;
-    }
-
     get quantity(): number {
         return this._quantity;
     }
@@ -22,6 +16,12 @@ export default class Resource extends WorldObject {
 
     get type(): ResourceType {
         return this._type;
+    }
+
+    constructor(healthPoints: number, position: Position, type: ResourceType) {
+        super(healthPoints, position, false, Team.NEUTRAL);
+        this._quantity = this.healthPoints;
+        this._type = type;
     }
 
     public getInformation(): string {

@@ -6,12 +6,6 @@ export default class ResourceStorage {
     private _foodStored: Resource;
     private _ironStored: Resource;
 
-    constructor(){
-        this._foodStored = new Resource(0, {x:0, y:0}, ResourceType.FOOD);
-        this._lumberStored = new Resource(0, {x:0, y:1}, ResourceType.LUMBER);
-        this._ironStored = new Resource(0, {x:1, y:1}, ResourceType.IRON);
-    }
-
     get lumberStored(): Resource{
         return this._lumberStored;
     }
@@ -20,6 +14,12 @@ export default class ResourceStorage {
     }
     get ironStored(): Resource{
         return this._ironStored;
+    }
+
+    constructor(){
+        this._foodStored = new Resource(0, {x:0, y:0}, ResourceType.FOOD);
+        this._lumberStored = new Resource(0, {x:0, y:1}, ResourceType.LUMBER);
+        this._ironStored = new Resource(0, {x:1, y:1}, ResourceType.IRON);
     }
 
     public addResource(resource: Resource): void{
