@@ -34,7 +34,7 @@ export class UnitUtils {
     }
 
     public getRandomUnit(units: Unit[]): Unit{
-        return units[Math.floor(Math.random() * ((units.length - 1) - 0 + 1) + 0)];
+        return units[Math.floor(Math.random() * units.length)];
     }
 
     public getUnitsHealhtPoints(units: Unit[]): number{
@@ -72,7 +72,7 @@ export class ResourceUtils{
     }
 
     public isPositionTaken(resources: Resource[], position: Position): boolean{
-        return resources.find(res => res.position.x === position.x && res.position.y === position.y) ? true : false;
+        return !!resources.find(res => res.position.x === position.x && res.position.y === position.y);
     }
 }
 

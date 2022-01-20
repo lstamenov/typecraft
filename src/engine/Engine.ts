@@ -13,6 +13,14 @@ export default class Engine {
     private _resourceUtils: ResourceUtils;
     private _commonUtils: CommonUtils;
 
+    public get redTeam() {
+        return this._redTeam;
+    }
+
+    public get blueTeam() {
+        return this._blueTeam;
+    }
+
     constructor() {
         this._redTeam = new TeamEntity(Team.RED);
         this._blueTeam = new TeamEntity(Team.BLUE);
@@ -20,14 +28,6 @@ export default class Engine {
         this._unitUtils = new UnitUtils();
         this._resourceUtils = new ResourceUtils();
         this._commonUtils = new CommonUtils();
-    }
-
-    public get redTeam() {
-        return this._redTeam;
-    }
-
-    public get blueTeam() {
-        return this._blueTeam;
     }
 
     public createUnit(name: string, positionAsString: string, teamAsString: string, unitTypeAsString: string): string {
@@ -109,13 +109,11 @@ export default class Engine {
                 return `There is nothing to attack!`;
             }
 
-
             if(attacker.type === UnitType.NINJA){
                 let damageTaken: number = this._unitUtils.getUnitsHealhtPoints(defenders);
                 defenders.forEach(d => attacker.attackEnemy(d));
                 damageTaken -= this._unitUtils.getUnitsHealhtPoints(defenders);
                 const deadUnits: Unit[] = this._unitUtils.getDeadUnits(defenders);
-                console.log(defenders);
                 this.deleteDeadUnits(deadUnits);
                 return `There was a fierce fight between ${attacker.name} - attacker and ${this._unitUtils.getDefendersAsString(defenders)} - defenders. The defenders took totally 0 damage. The attacker took ${damageTaken} damage. There are ${deadUnits.length} dead units after the fight was over - ${this._unitUtils.getDefendersAsString(deadUnits)}`;
             }else {
@@ -124,7 +122,6 @@ export default class Engine {
                 const defenderHealthBeforeFight = defender.healthPoints;
                 attacker.attackEnemy(defender);
                 const deadUnits: Unit[] = this._unitUtils.getDeadUnits([attacker, defender]);
-                console.log(defender);
                 this.deleteDeadUnits(deadUnits);
                 return `There was a fierce fight between ${attacker.name} - attacker and ${defender.name} - defender. The defender took totally ${attackerHealthBeforeFight - attacker.healthPoints} damage. The attacker took ${defenderHealthBeforeFight - defender.healthPoints} damage. There are ${deadUnits.length} dead units after the fight was over - ${this._unitUtils.getDefendersAsString(deadUnits)}`;
             }
@@ -186,6 +183,7 @@ export default class Engine {
 
     public endGame(): string{
         const [winner, looser] = this.getRanking();
+        this.resetEngine();
         return `The game is over. Team ${winner.type} is the winner with ${winner.getPoints()} points, and team ${looser.type} is the loser with ${looser.getPoints()} points`;
     }
 
@@ -222,5 +220,11 @@ export default class Engine {
 
     public showAllUnitsByTeam(teamAsString: string): string{
         return teamAsString.toLowerCase() === 'blue' ? this._blueTeam.getInformationForAllUnits() : this.redTeam.getInformationForAllUnits();
+    }
+
+    private resetEngine(): void{
+        this._resources = [];
+        this._blueTeam = new TeamEntity(Team.BLUE);
+        this._redTeam = new TeamEntity(Team.RED);
     }
 }

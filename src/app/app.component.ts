@@ -8,10 +8,12 @@ import Engine from 'src/engine/Engine';
 })
 export class AppComponent {
   public outputMessages: string[] = [];
-  public engine: Engine = new Engine();
+  public engine: Engine;
   @ViewChild('inputArea') inputArea: ElementRef;
 
-  constructor() { }
+  constructor() { 
+    this.engine = new Engine();
+  }
 
   executeCommand() {
     const commands: string[] = this.inputArea.nativeElement.value.split(' ');
@@ -20,7 +22,7 @@ export class AppComponent {
     switch (command) {
       case 'create':
         if (commands[1].toLowerCase() === 'unit') {
-          const [, , name, position, team, unitType] = commands;
+          const [,, name, position, team, unitType] = commands;
           this.outputMessages.push(this.engine.createUnit(name, position, team, unitType));
         } else if (commands[1].toLowerCase() === 'resource') {
           const [, , type, position, quantity] = commands;
@@ -43,7 +45,6 @@ export class AppComponent {
         break;
       case 'end':
         this.outputMessages.push(this.engine.endGame());
-        this.engine = new Engine();
         break;
       case 'show':
         const type: string = commands[1];

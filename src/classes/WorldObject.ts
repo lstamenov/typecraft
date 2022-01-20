@@ -8,18 +8,6 @@ export default abstract class WorldObject {
     private _canMove: boolean;
     private _team: Team;
 
-    constructor( 
-        healthPoints: number,
-        position: Position,
-        canMove: boolean = true,
-        team: Team = Team.NEUTRAL){
-            this._healthPoints = healthPoints;
-            this._position = position;
-            this._canMove = canMove;
-            this._team = team;
-            this.setIsDestroyed();
-    }
-
     get position(): Position{
         return this._position;
     }
@@ -38,6 +26,18 @@ export default abstract class WorldObject {
 
     get healthPoints(): number{
         return this._healthPoints;
+    }
+
+    constructor( 
+        healthPoints: number,
+        position: Position,
+        canMove: boolean = true,
+        team: Team = Team.NEUTRAL){
+            this._healthPoints = healthPoints;
+            this._position = position;
+            this._canMove = canMove;
+            this._team = team;
+            this.setIsDestroyed();
     }
 
     private setIsDestroyed(): void{

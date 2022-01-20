@@ -9,12 +9,6 @@ export default class TeamEntity {
     private _resourceStorage: ResourceStorage;
     private _type: Team;
 
-    constructor(team: Team) {
-        this._units = [];
-        this._resourceStorage = new ResourceStorage();
-        this._type = team;
-    }
-  
     public get units() {
         return this._units;
     }
@@ -27,13 +21,19 @@ export default class TeamEntity {
         return this._resourceStorage;
     }
 
+    constructor(team: Team) {
+        this._units = [];
+        this._resourceStorage = new ResourceStorage();
+        this._type = team;
+    }
+
     public createUnit(name: string, position: Position, team: Team, unitType: UnitType): void{
         this._units.push(new Unit(position, team, name, unitType));
     }
 
     public checkIfNameIsUnique(name: string): boolean {
         const unit: (Unit | undefined) = this._units.find(unit => unit.name === name);
-        return unit ? false : true;
+        return !!!unit;
     }
 
     public getUnitByName(name: string): (Unit | undefined) {
@@ -45,11 +45,16 @@ export default class TeamEntity {
     }
 
     public deleteUnit(unit: Unit): void {
+        let unitIndexToDelete = -1;
+
         for (let i = 0; i < this._units.length; i++) {
             if (unit === this._units[i]) {
-                this._units.splice(i, 1);
-                return;
+                unitIndexToDelete = i;
             }
+        }
+
+        if(unitIndexToDelete !== -1){
+            this._units.splice(unitIndexToDelete, 1);
         }
     }
 

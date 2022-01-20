@@ -9,6 +9,26 @@ export default class Unit extends WorldObject {
     private _defense: number;
     private _canGather: boolean;
     private _type: UnitType;
+
+    get name(): string {
+        return this._name;
+    }
+ 
+    get attack(): number {
+        return this._attack;
+    }
+ 
+    get defense(): number {
+        return this._defense;
+    }
+ 
+    get canGather(): boolean {
+        return this._canGather;
+    }
+
+    get type(): UnitType{
+        return this._type;
+    }
  
     constructor(position: Position,
         team: Team,
@@ -50,28 +70,9 @@ export default class Unit extends WorldObject {
                 break;
         }
     }
-    get name(): string {
-        return this._name;
-    }
- 
-    get attack(): number {
-        return this._attack;
-    }
- 
-    get defense(): number {
-        return this._defense;
-    }
- 
-    get canGather(): boolean {
-        return this._canGather;
-    }
-
-    get type(): UnitType{
-        return this._type;
-    }
  
     private isCriticalStrike(): boolean {
-        return Math.floor(Math.random() * (6 - 1 + 1) + 1) % 2 === 0;
+        return Math.floor(Math.random() * 7) <= 3;
     }
  
     public attackEnemy(enemy: Unit): void {
