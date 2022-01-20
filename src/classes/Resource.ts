@@ -1,8 +1,8 @@
 import WorldObject from "./WorldObject";
 import { ResourceType, Team } from "./enum.types";
-import { Position } from "./models";
+import { Position, WorldObjectModel } from "../models/models";
 
-export default class Resource extends WorldObject {
+export default class Resource extends WorldObject implements WorldObjectModel {
     private _quantity: number;
     private _type: ResourceType;
 

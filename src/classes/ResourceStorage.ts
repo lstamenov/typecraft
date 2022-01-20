@@ -1,7 +1,8 @@
+import { ResourceStorageModel } from "src/models/models";
 import { ResourceType } from "./enum.types";
 import Resource from "./Resource";
 
-export default class ResourceStorage {
+export default class ResourceStorage implements ResourceStorageModel {
     private _lumberStored: Resource;
     private _foodStored: Resource;
     private _ironStored: Resource;

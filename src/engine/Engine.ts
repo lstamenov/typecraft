@@ -1,11 +1,11 @@
 import { ResourceType, Team, UnitType } from "src/classes/enum.types";
-import { Position } from "src/classes/models";
+import { EngineModel, Position } from "src/models/models";
 import Resource from "src/classes/Resource";
 import TeamEntity from "./TeamEntity";
 import { UnitUtils, CommonUtils, ResourceUtils } from "src/utils/utils";
 import Unit from "src/classes/Unit";
 
-export default class Engine {
+export default class Engine implements EngineModel {
     private _redTeam: TeamEntity;
     private _blueTeam: TeamEntity;
     private _resources: Resource[];
